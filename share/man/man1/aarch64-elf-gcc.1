@@ -55,7 +55,7 @@
 .\" ========================================================================
 .\"
 .IX Title "GCC 1"
-.TH GCC 1 2023-09-16 gcc-14.0.0 GNU
+.TH GCC 1 2023-09-23 gcc-14.0.0 GNU
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -2781,6 +2781,29 @@ The default when in a standards compliant mode (\fB\-std=c11\fR or similar)
 is \fB\-fpermitted\-flt\-eval\-methods=c11\fR.  The default when in a GNU
 dialect (\fB\-std=gnu11\fR or similar) is
 \&\fB\-fpermitted\-flt\-eval\-methods=ts\-18661\-3\fR.
+.Sp
+The \fB\-fdeps\-*\fR options are used to extract structured dependency
+information for a source.  This involves determining what resources provided by
+other source files will be required to compile the source as well as what
+resources are provided by the source.  This information can be used to add
+required dependencies between compilation rules of dependent sources based on
+their contents rather than requiring such information be reflected within the
+build tools as well.
+.IP \fB\-fdeps\-file=\fR\fIfile\fR 4
+.IX Item "-fdeps-file=file"
+Where to write structured dependency information.
+.IP \fB\-fdeps\-format=\fR\fIformat\fR 4
+.IX Item "-fdeps-format=format"
+The format to use for structured dependency information. \fBp1689r5\fR is the
+only supported format right now.  Note that when this argument is specified, the
+output of \fB\-MF\fR is stripped of some information (namely C++ modules) so
+that it does not use extended makefile syntax not understood by most tools.
+.IP \fB\-fdeps\-target=\fR\fIfile\fR 4
+.IX Item "-fdeps-target=file"
+Analogous to \fB\-MT\fR but for structured dependency information.  This
+indicates the target which will ultimately need any required resources and
+provide any resources extracted from the source that may be required by other
+sources.
 .IP \fB\-fplan9\-extensions\fR 4
 .IX Item "-fplan9-extensions"
 Accept some non-standard constructs used in Plan 9 code.
@@ -15303,6 +15326,13 @@ crossing a loop backedge when comparing to
 .IX Item "uninit-control-dep-attempts"
 Maximum number of nested calls to search for control dependencies
 during uninitialized variable analysis.
+.IP \fBuninit-max-chain-len\fR 4
+.IX Item "uninit-max-chain-len"
+Maximum number of predicates anded for each predicate ored in the normalized
+predicate chain.
+.IP \fBuninit-max-num-chains\fR 4
+.IX Item "uninit-max-num-chains"
+Maximum number of predicates ored in the normalized predicate chain.
 .IP \fBsched-autopref-queue-depth\fR 4
 .IX Item "sched-autopref-queue-depth"
 Hardware autoprefetcher scheduler model control flag.
