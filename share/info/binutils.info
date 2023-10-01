@@ -384,6 +384,10 @@ to specify variations on an operation’s behavior:
      since checking the timestamps would lose any speed advantage from
      the operation ‘q’.
 
+     Note - if an archive has been created in a deterministic manner, eg
+     via the use of the ‘D’ modifier, then replacement will always
+     happen and the ‘u’ modifier will be ineffective.
+
 ‘U’
      Do _not_ operate in _deterministic_ mode.  This is the inverse of
      the ‘D’ modifier, above: added files and the archive index will get
@@ -5992,7 +5996,7 @@ Binutils Index
 * Menu:
 
 * –enable-deterministic-archives:        ar cmdline.          (line 150)
-* –enable-deterministic-archives <1>:    ar cmdline.          (line 238)
+* –enable-deterministic-archives <1>:    ar cmdline.          (line 242)
 * –enable-deterministic-archives <2>:    objcopy.             (line 370)
 * –enable-deterministic-archives <3>:    objcopy.             (line 380)
 * –enable-deterministic-archives <4>:    ranlib.              (line  32)
@@ -6030,7 +6034,7 @@ Binutils Index
 * contents of archive:                   ar cmdline.          (line  97)
 * crash:                                 Bug Criteria.        (line   9)
 * creating archives:                     ar cmdline.          (line 144)
-* creating thin archive:                 ar cmdline.          (line 314)
+* creating thin archive:                 ar cmdline.          (line 318)
 * CTF:                                   objdump.             (line 764)
 * CTF <1>:                               readelf.             (line 473)
 * cxxfilt:                               c++filt.             (line  16)
@@ -6044,7 +6048,7 @@ Binutils Index
 * demangling in objdump:                 objdump.             (line 112)
 * demangling in objdump <1>:             addr2line.           (line  91)
 * deterministic archives:                ar cmdline.          (line 150)
-* deterministic archives <1>:            ar cmdline.          (line 238)
+* deterministic archives <1>:            ar cmdline.          (line 242)
 * deterministic archives <2>:            objcopy.             (line 370)
 * deterministic archives <3>:            objcopy.             (line 380)
 * deterministic archives <4>:            ranlib.              (line  32)
@@ -6117,7 +6121,7 @@ Binutils Index
 * object formats available:              objdump.             (line 252)
 * offsets of files:                      ar cmdline.          (line 193)
 * operations on archive:                 ar cmdline.          (line  22)
-* plugins:                               ar cmdline.          (line 272)
+* plugins:                               ar cmdline.          (line 276)
 * plugins <1>:                           nm.                  (line 336)
 * printing from archive:                 ar cmdline.          (line  46)
 * printing strings:                      strings.             (line   6)
@@ -6183,33 +6187,33 @@ Tag Table:
 Node: Top1839
 Node: ar3584
 Node: ar cmdline7016
-Node: ar scripts20903
-Node: nm26909
-Node: objcopy43235
-Node: objdump86112
-Node: ranlib125921
-Node: size127618
-Node: strings132004
-Node: strip138092
-Node: c++filt148491
-Ref: c++filt-Footnote-1154554
-Node: addr2line154668
-Node: windmc160871
-Node: windres164804
-Node: dlltool171812
-Node: def file format185867
-Node: readelf188617
-Node: elfedit209320
-Node: Common Options212890
-Node: Selecting the Target System213936
-Node: Target Selection214876
-Node: Architecture Selection217001
-Node: debuginfod217877
-Node: Reporting Bugs218911
-Node: Bug Criteria219673
-Node: Bug Reporting220232
-Node: GNU Free Documentation License227189
-Node: Binutils Index252552
+Node: ar scripts21106
+Node: nm27112
+Node: objcopy43438
+Node: objdump86315
+Node: ranlib126124
+Node: size127821
+Node: strings132207
+Node: strip138295
+Node: c++filt148694
+Ref: c++filt-Footnote-1154757
+Node: addr2line154871
+Node: windmc161074
+Node: windres165007
+Node: dlltool172015
+Node: def file format186070
+Node: readelf188820
+Node: elfedit209523
+Node: Common Options213093
+Node: Selecting the Target System214139
+Node: Target Selection215079
+Node: Architecture Selection217204
+Node: debuginfod218080
+Node: Reporting Bugs219114
+Node: Bug Criteria219876
+Node: Bug Reporting220435
+Node: GNU Free Documentation License227392
+Node: Binutils Index252755
 
 End Tag Table
 

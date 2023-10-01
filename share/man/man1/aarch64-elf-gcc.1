@@ -55,7 +55,7 @@
 .\" ========================================================================
 .\"
 .IX Title "GCC 1"
-.TH GCC 1 2023-09-23 gcc-14.0.0 GNU
+.TH GCC 1 2023-10-01 gcc-14.0.0 GNU
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -2723,8 +2723,9 @@ can be omitted, to use a target-specific default value.
 .IP \fB\-fopenmp\fR 4
 .IX Item "-fopenmp"
 Enable handling of OpenMP directives \f(CW\*(C`#pragma omp\*(C'\fR in C/C++,
-\&\f(CW\*(C`[[omp::directive(...)]]\*(C'\fR and \f(CW\*(C`[[omp::sequence(...)]]\*(C'\fR in C++ and
-\&\f(CW\*(C`!$omp\*(C'\fR in Fortran.  When \fB\-fopenmp\fR is specified, the
+\&\f(CW\*(C`[[omp::directive(...)]]\*(C'\fR, \f(CW\*(C`[[omp::sequence(...)]]\*(C'\fR and
+\&\f(CW\*(C`[[omp::decl(...)]]\*(C'\fR in C++ and \f(CW\*(C`!$omp\*(C'\fR in Fortran.
+When \fB\-fopenmp\fR is specified, the
 compiler generates parallel code according to the OpenMP Application
 Program Interface v4.5 <\fBhttps://www.openmp.org\fR>.  This option
 implies \fB\-pthread\fR, and thus is only supported on targets that
@@ -2733,11 +2734,14 @@ have support for \fB\-pthread\fR. \fB\-fopenmp\fR implies
 .IP \fB\-fopenmp\-simd\fR 4
 .IX Item "-fopenmp-simd"
 Enable handling of OpenMP's \f(CW\*(C`simd\*(C'\fR, \f(CW\*(C`declare simd\*(C'\fR,
-\&\f(CW\*(C`declare reduction\*(C'\fR, \f(CW\*(C`assume\*(C'\fR, \f(CW\*(C`ordered\*(C'\fR, \f(CW\*(C`scan\*(C'\fR,
-\&\f(CW\*(C`loop\*(C'\fR directives and combined or composite directives with
+\&\f(CW\*(C`declare reduction\*(C'\fR, \f(CW\*(C`assume\*(C'\fR, \f(CW\*(C`ordered\*(C'\fR, \f(CW\*(C`scan\*(C'\fR
+and \f(CW\*(C`loop\*(C'\fR directive, and of combined or composite directives with
 \&\f(CW\*(C`simd\*(C'\fR as constituent with \f(CW\*(C`#pragma omp\*(C'\fR in C/C++,
-\&\f(CW\*(C`[[omp::directive(...)]]\*(C'\fR and \f(CW\*(C`[[omp::sequence(...)]]\*(C'\fR in C++
-and \f(CW\*(C`!$omp\*(C'\fR in Fortran.  Other OpenMP directives are ignored.
+\&\f(CW\*(C`[[omp::directive(...)]]\*(C'\fR, \f(CW\*(C`[[omp::sequence(...)]]\*(C'\fR and
+\&\f(CW\*(C`[[omp::decl(...)]]\*(C'\fR in C++ and \f(CW\*(C`!$omp\*(C'\fR in Fortran.
+Other OpenMP directives are ignored.  Unless \fB\-fopenmp\fR is
+additionally specified, the \f(CW\*(C`loop\*(C'\fR region binds to the current
+task region, independent of the specified \f(CW\*(C`bind\*(C'\fR clause.
 .IP \fB\-fopenmp\-target\-simd\-clone\fR 4
 .IX Item "-fopenmp-target-simd-clone"
 .PD 0
@@ -15493,6 +15497,26 @@ Use both Advanced SIMD and SVE.  Prefer SVE when the costs are deemed equal.
 .Sp
 The default value is 0.
 .RE
+.IP \fBaarch64\-ldp\-policy\fR 4
+.IX Item "aarch64-ldp-policy"
+Fine-grained policy for load pairs.
+With \fB\-\-param=aarch64\-ldp\-policy=default\fR, use the policy of the
+tuning structure.  This is the current default.
+With \fB\-\-param=aarch64\-ldp\-policy=always\fR, emit ldp regardless
+of alignment.
+With \fB\-\-param=aarch64\-ldp\-policy=never\fR, do not emit ldp.
+With \fB\-\-param=aarch64\-ldp\-policy=aligned\fR, emit ldp only if the
+source pointer is aligned to at least double the alignment of the type.
+.IP \fBaarch64\-stp\-policy\fR 4
+.IX Item "aarch64-stp-policy"
+Fine-grained policy for store pairs.
+With \fB\-\-param=aarch64\-stp\-policy=default\fR, use the policy of the
+tuning structure.  This is the current default.
+With \fB\-\-param=aarch64\-stp\-policy=always\fR, emit stp regardless
+of alignment.
+With \fB\-\-param=aarch64\-stp\-policy=never\fR, do not emit stp.
+With \fB\-\-param=aarch64\-stp\-policy=aligned\fR, emit stp only if the
+source pointer is aligned to at least double the alignment of the type.
 .IP \fBaarch64\-loop\-vect\-issue\-rate\-niters\fR 4
 .IX Item "aarch64-loop-vect-issue-rate-niters"
 The tuning for some AArch64 CPUs tries to take both latencies and issue
@@ -25292,10 +25316,12 @@ The default code model is \f(CW\*(C`normal\*(C'\fR.
 .PD
 Use or do not use assembler relocation operators when dealing with symbolic
 addresses.  The alternative is to use assembler macros instead, which may
-limit optimization.  The default value for the option is determined during
-GCC build-time by detecting corresponding assembler support:
-\&\f(CW\*(C`\-mexplicit\-relocs\*(C'\fR if said support is present,
-\&\f(CW\*(C`\-mno\-explicit\-relocs\*(C'\fR otherwise.  This option is mostly useful for
+limit instruction scheduling but allow linker relaxation.  The default
+value for the option is determined during GCC build-time by detecting
+corresponding assembler support:
+\&\f(CW\*(C`\-mno\-explicit\-relocs\*(C'\fR if the assembler supports relaxation or it
+does not support relocation operators at all,
+\&\f(CW\*(C`\-mexplicit\-relocs\*(C'\fR otherwise.  This option is mostly useful for
 debugging, or interoperation with assemblers different from the build-time
 one.
 .IP \fB\-mdirect\-extern\-access\fR 4
